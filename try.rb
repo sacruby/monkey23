@@ -2,6 +2,9 @@ require "minitest/autorun"
 # ruby -Ilib:test try.rb
 
 class Object
+  def try(*a)
+    public_send(*a) if a.empty? || respond_to?(a.first)
+  end
 end
 
 describe Object do

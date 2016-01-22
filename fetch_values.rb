@@ -2,6 +2,17 @@ require "minitest/autorun"
 # ruby -Ilib:test fetch_values.rb
 
 class Hash
+
+  def monkey_fetch_values(*keys)
+    keys.map do |key|
+      if self.has_key?(key)
+        self[key]
+      else
+        raise KeyError
+      end
+    end
+  end
+
 end
 
 describe Numeric do

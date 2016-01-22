@@ -2,6 +2,12 @@ require "minitest/autorun"
 # ruby -Ilib:test hash_comparison.rb
 
 class Hash
+
+  def contains_subset?(hash)
+    merge(hash) == self
+    # (hash.to_a - to_a).empty? # alternate implementation
+  end
+
 end
 
 describe Numeric do

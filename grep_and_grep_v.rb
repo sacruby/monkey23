@@ -1,6 +1,37 @@
 require "minitest/autorun"
 # ruby -Ilib:test grep_and_grep_v.rb
 
+module Enumerable
+  def monkey_grep(pattern)
+    apply_filter(pattern, true)
+  end
+
+  def monkey_grep_v(pattern)
+    apply_filter(pattern, false)
+  end
+
+  private
+
+  def apply_filter(pattern, expected_match_result)
+    comparator = determine_comparison_method(pattern)
+    matches = []
+    self.each do |it|
+      if (!!pattern.send(comparator, it)) == expected_match_result
+        matches.push(it)
+      end
+    end
+    matches
+  end
+
+  def determine_comparison_method(pattern)
+    case pattern
+      when Regexp then :match
+      when Range then :include?
+      else :==
+    end
+  end
+end
+
 describe Array do
   describe "grep by exact match" do
     describe "#monkey_grep" do
